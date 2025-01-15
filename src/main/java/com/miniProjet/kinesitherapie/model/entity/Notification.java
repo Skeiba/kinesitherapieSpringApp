@@ -4,25 +4,26 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+
 @Data
 @Entity
-@Table(name = "paiements")
-public class Paiement {
+@Table(name = "notifications")
+public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private String message;
+
+    @Column(nullable = false)
+    private LocalDateTime dateEnvoi;
+
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
     private Patient patient;
-
-    @Column(nullable = false)
-    private double montant;
-
-    @Column(nullable = false)
-    private LocalDateTime date;
-
-    @ManyToOne
-    @JoinColumn(name = "statistiques_id")
-    private Statistiques statistiques;
 }

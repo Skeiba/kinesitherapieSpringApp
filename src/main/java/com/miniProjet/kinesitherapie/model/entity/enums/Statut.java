@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entity.enums;
 
 public enum Statut {
     EN_ATTENTE,

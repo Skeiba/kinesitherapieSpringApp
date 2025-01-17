@@ -1,6 +1,6 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
-import com.miniProjet.kinesitherapie.model.entity.enums.Statut;
+import com.miniProjet.kinesitherapie.model.enums.Statut;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,14 +13,16 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String nom;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String prenom;
 
+    @Column(length = 50)
     private String adresse;
 
+    @Column(nullable = false, unique = true, length = 15)
     private String telephone;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)

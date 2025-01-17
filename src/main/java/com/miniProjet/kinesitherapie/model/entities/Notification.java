@@ -1,9 +1,9 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -13,11 +13,12 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
     @Column(nullable = false)
     private String message;
 
-    @Column(nullable = false)
-    private LocalDateTime dateEnvoi;
+    @Column(nullable = false) @Temporal(TemporalType.DATE)
+    private LocalDate dateEnvoi;
 
     @ManyToOne
     @JoinColumn(name = "utilisateur_id")

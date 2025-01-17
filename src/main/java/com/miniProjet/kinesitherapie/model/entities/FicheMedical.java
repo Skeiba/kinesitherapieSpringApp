@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,6 +15,7 @@ public class FicheMedical {
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
+    @Lob
     @Column(nullable = false)
     private String description;
 }

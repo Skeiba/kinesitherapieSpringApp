@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

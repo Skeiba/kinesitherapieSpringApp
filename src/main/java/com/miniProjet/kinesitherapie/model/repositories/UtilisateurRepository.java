@@ -1,6 +1,6 @@
-package com.miniProjet.kinesitherapie.model.repository;
+package com.miniProjet.kinesitherapie.model.repositories;
 
-import com.miniProjet.kinesitherapie.model.entity.Utilisateur;
+import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

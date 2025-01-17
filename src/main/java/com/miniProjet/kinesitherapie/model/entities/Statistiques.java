@@ -1,9 +1,9 @@
-package com.miniProjet.kinesitherapie.model.entity;
+package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -17,8 +17,8 @@ public class Statistiques {
     @Column(nullable = false)
     private String rapport;
 
-    @Column(nullable = false)
-    private LocalDateTime dateGeneration;
+    @Column(nullable = false) @Temporal(TemporalType.DATE)
+    private LocalDate dateGeneration;
 
     @OneToMany(mappedBy = "statistiques", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RendezVous> rendezVous;

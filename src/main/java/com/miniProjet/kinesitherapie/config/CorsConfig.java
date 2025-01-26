@@ -16,16 +16,13 @@ public class CorsConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allowing credentials for secure cross-origin cookies
         config.setAllowCredentials(true);
 
-        // Frontend URLs
         config.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:4200"
         ));
 
-        // Allowed headers
         config.setAllowedHeaders(List.of(
                 "Origin",
                 "Content-Type",
@@ -34,14 +31,12 @@ public class CorsConfig {
                 "X-Requested-With"
         ));
 
-        // Exposing headers to the client
         config.setExposedHeaders(List.of(
                 "Authorization",
                 "Content-Type",
                 "X-Requested-With"
         ));
 
-        // Allowed HTTP methods
         config.setAllowedMethods(List.of(
                 "GET",
                 "POST",
@@ -50,7 +45,6 @@ public class CorsConfig {
                 "OPTIONS"
         ));
 
-        // Applying configuration to all endpoints
         source.registerCorsConfiguration("/**", config);
 
         return new CorsFilter(source);

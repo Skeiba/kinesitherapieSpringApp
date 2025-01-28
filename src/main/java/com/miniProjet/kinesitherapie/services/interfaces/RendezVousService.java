@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.services.service;
+package com.miniProjet.kinesitherapie.services.interfaces;
 
 public interface RendezVousService {
 }

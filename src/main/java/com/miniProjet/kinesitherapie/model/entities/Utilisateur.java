@@ -1,7 +1,12 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
 import com.miniProjet.kinesitherapie.model.enums.Role;
+import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.List;
@@ -14,15 +19,20 @@ public class Utilisateur {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = AppConstants.INVALID_NOM)
     @Column(nullable = false, length = 50)
     private String nom;
 
+    @NotBlank(message = AppConstants.INVALID_PRENOM)
     @Column(nullable = false, length = 50)
     private String prenom;
 
-    @Column(unique = true, nullable = false, length = 50)
+    @NotNull(message = "Email cannot be null")
+    @Email(message = AppConstants.INVALID_EMAIL)
+    @Column(nullable = false, length = 50, unique = true)
     private String email;
 
+    @NotNull(message = "Password cannot be null")
     @Column(nullable = false)
     private String motsDePasse;
 

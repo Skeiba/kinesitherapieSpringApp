@@ -1,6 +1,8 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
+import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
@@ -11,6 +13,7 @@ public class Salle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = AppConstants.INVALID_NOM)
     @Column(nullable = false, length = 50)
     private String nom;
 

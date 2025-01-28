@@ -1,6 +1,7 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -17,6 +18,7 @@ public class Paiement {
     private Patient patient;
 
     @Column(nullable = false)
+    @Positive(message = "Montant must be a positive number")
     private double montant;
 
     @Column(nullable = false)

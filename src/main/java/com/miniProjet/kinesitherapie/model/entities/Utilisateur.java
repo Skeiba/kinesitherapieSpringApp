@@ -3,10 +3,7 @@ package com.miniProjet.kinesitherapie.model.entities;
 import com.miniProjet.kinesitherapie.model.enums.Role;
 import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.List;
@@ -34,8 +31,9 @@ public class Utilisateur {
 
     @NotNull(message = "Password cannot be null")
     @Column(nullable = false)
-    private String motsDePasse;
+    private String motDePasse;
 
+    @Column(name = "logged_in")
     private boolean loggedIn;
 
     @Enumerated(EnumType.STRING)

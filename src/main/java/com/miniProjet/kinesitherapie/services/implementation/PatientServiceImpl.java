@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.services.impl;
+package com.miniProjet.kinesitherapie.services.implementation;
 
 import com.miniProjet.kinesitherapie.model.dto.PatientDTO;
 import com.miniProjet.kinesitherapie.model.entities.Patient;

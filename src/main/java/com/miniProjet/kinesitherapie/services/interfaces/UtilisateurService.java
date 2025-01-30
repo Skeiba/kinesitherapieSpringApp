@@ -1,4 +1,14 @@
-package com.miniProjet.kinesitherapie.services.service;
+package com.miniProjet.kinesitherapie.services.interfaces;
 
-public interface UtilisateurService {
+import com.miniProjet.kinesitherapie.auth.dto.RegisterRequest;
+import com.miniProjet.kinesitherapie.exceptions.EmailAlreadyExistsException;
+import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+
+public interface UtilisateurService extends UserDetailsService {
+    void saveUtilisateur(Utilisateur utilisateur);
+    Utilisateur registerUtilisateur(RegisterRequest registerRequest) throws EmailAlreadyExistsException;
+    Utilisateur findByEmail(String email);
+    boolean existsByEmail(String email);
 }

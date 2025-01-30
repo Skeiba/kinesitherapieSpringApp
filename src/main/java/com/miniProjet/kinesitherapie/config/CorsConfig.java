@@ -18,16 +18,13 @@ import java.util.List;
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
+    public static CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
         config.setAllowCredentials(true);
 
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:4200"
-        ));
+        config.setAllowedOrigins(List.of("*"));
 
         config.setAllowedHeaders(List.of(
                 "Origin",

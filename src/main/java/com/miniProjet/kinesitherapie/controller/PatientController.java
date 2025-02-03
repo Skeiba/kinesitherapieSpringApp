@@ -2,6 +2,7 @@ package com.miniProjet.kinesitherapie.controller;
 
 import com.miniProjet.kinesitherapie.model.dto.PageResponse;
 import com.miniProjet.kinesitherapie.model.dto.PatientDTO;
+import com.miniProjet.kinesitherapie.model.dto.PatientHistoryDTO;
 import com.miniProjet.kinesitherapie.services.interfaces.PatientService;
 import com.miniProjet.kinesitherapie.utils.AppConstants;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ public class PatientController {
 
     private final PatientService patientService;
 
-
     @PostMapping
     public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO) {
         PatientDTO createdPatient = patientService.createPatient(patientDTO);
@@ -31,8 +31,12 @@ public class PatientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientDTO> getPatientById(@PathVariable Long id) {
-        PatientDTO patientDTO = patientService.getPatientById(id);
-        return ResponseEntity.ok(patientDTO);
+        return ResponseEntity.ok(patientService.getPatientById(id));
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<PatientHistoryDTO> getPatientHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(patientService.getPatientHistory(id));
     }
 
     @GetMapping

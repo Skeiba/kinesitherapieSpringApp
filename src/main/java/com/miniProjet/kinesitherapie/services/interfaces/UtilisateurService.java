@@ -11,4 +11,5 @@ public interface UtilisateurService extends UserDetailsService {
     Utilisateur registerUtilisateur(RegisterRequest registerRequest) throws EmailAlreadyExistsException;
     Utilisateur findByEmail(String email);
     boolean existsByEmail(String email);
+    void updateLoggedInStatus(Long id, boolean isLoggedIn);
 }

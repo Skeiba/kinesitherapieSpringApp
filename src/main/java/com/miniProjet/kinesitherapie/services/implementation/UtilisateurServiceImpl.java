@@ -40,7 +40,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setMotDePasse(passwordEncoder.encode(registerRequest.getMotDePasse()));
         return utilisateurRepository.save(utilisateur);
     }
-
     @Override
     public void saveUtilisateur(Utilisateur utilisateur) {
         utilisateurRepository.save(utilisateur);
@@ -52,8 +51,14 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public void updateLoggedInStatus(Long id, boolean isLoggedIn) {
+        utilisateurRepository.updateLoggedInStatus(id, isLoggedIn);
+    }
+
+    @Override
     public Utilisateur findByEmail(String email) {
         return utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new EmailDontExistException("Utilisateur not found with email :"+email));
     }
+
 }

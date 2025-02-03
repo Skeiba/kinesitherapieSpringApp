@@ -94,8 +94,7 @@ public class AuthController {
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
 
         Utilisateur utilisateur = utilisateurService.findByEmail(loginRequest.email());
-        utilisateur.setLoggedIn(true);
-        utilisateurService.saveUtilisateur(utilisateur);
+        utilisateurService.updateLoggedInStatus(utilisateur.getId(), true);
 
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Login successful!");

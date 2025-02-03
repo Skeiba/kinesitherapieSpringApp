@@ -18,10 +18,12 @@ public class AppConstants {
     public static final String SORT_DIR = "asc";
     public static final String SORT_BY = "nom";
 
-    //Error messages
+    //Invalid ****
     public static final String INVALID_PHONE_NUMBER = "Phone number must start with 06, 07, or 05 and contain exactly 10 digits";
     public static final String INVALID_EMAIL = "Invalid email address";
     public static final String INVALID_NOM = "Nom can't be empty";
     public static final String INVALID_PRENOM = "Prenom can't be empty";
     public static final String INVALID_ADRESSE = "Adresse can't be empty";
+    public static final String INVALID_MESSAGE = "Message can't be empty";
+    public static final String INVALID_DATE = "Date can't be empty";
 }

@@ -1,5 +1,7 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
+import com.miniProjet.kinesitherapie.model.enums.RessourceStatus;
+import com.miniProjet.kinesitherapie.model.enums.Role;
 import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -16,6 +18,14 @@ public class Salle {
     @NotBlank(message = AppConstants.INVALID_NOM)
     @Column(nullable = false, length = 50)
     private String nom;
+
+
+    @Column(nullable = false)
+     private String Location;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RessourceStatus status;
 
     private int nombreMachines;
     private int nombreLits;

@@ -1,10 +1,10 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
+import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,38 +15,37 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = AppConstants.INVALID_NOM)
     @Column(nullable = false, length = 50)
     private String nom;
 
-    @Column(name="gender")
-    private String gender;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date dateOfBirth;
-
-    @Column(name="priscription")
-    private String Prescription;
-
+    @NotBlank(message = AppConstants.INVALID_PRENOM)
     @Column(nullable = false, length = 50)
     private String prenom;
 
-
-    @Column(length = 50)
+    @NotBlank(message = AppConstants.INVALID_ADRESSE)
+    @Column(nullable = false, length = 50)
     private String adresse;
 
+    @NotNull(message = "Email cannot be null")
+    @Email(message = AppConstants.INVALID_EMAIL)
+    @Column(nullable = false,unique = true, length = 50)
+    private String email;
+
+    @NotBlank(message = "Telephone cannot be blank")
+    @Pattern(regexp = "^(06|07|05)[0-9]{8}$", message = AppConstants.INVALID_PHONE_NUMBER)
     @Column(nullable = false, unique = true, length = 15)
     private String telephone;
 
-
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<FicheMedical> fichesMedicales;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RendezVous> rendezVous;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Paiement> paiements;
 
-    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Notification> notifications;
 }

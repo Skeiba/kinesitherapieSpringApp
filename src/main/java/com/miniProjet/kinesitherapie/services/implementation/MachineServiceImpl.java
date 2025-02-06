@@ -1,4 +1,4 @@
-package com.miniProjet.kinesitherapie.services.implementations;
+package com.miniProjet.kinesitherapie.services.implementation;
 
 import com.miniProjet.kinesitherapie.model.entities.Machine;
 import com.miniProjet.kinesitherapie.model.entities.Salle;

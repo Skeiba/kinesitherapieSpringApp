@@ -7,25 +7,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
+/**
+ * This class configures Cross-Origin Resource Sharing (CORS) settings for the application.
+ * It defines the allowed origins, headers, methods, and other CORS-related settings to enable communication
+ * between the backend and frontend hosted on different domains or ports.
+ *
+ */
 
 @Configuration
 public class CorsConfig {
 
-   @Bean
-    public CorsFilter corsFilter() {
+    @Bean
+    public static CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        // Allowing credentials for secure cross-origin cookies
         config.setAllowCredentials(true);
 
-        // Frontend URLs
-        config.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:4200"
-        ));
+        config.setAllowedOrigins(List.of("*"));
 
-        // Allowed headers
         config.setAllowedHeaders(List.of(
                 "Origin",
                 "Content-Type",
@@ -34,14 +34,12 @@ public class CorsConfig {
                 "X-Requested-With"
         ));
 
-        // Exposing headers to the client
         config.setExposedHeaders(List.of(
                 "Authorization",
                 "Content-Type",
                 "X-Requested-With"
         ));
 
-        // Allowed HTTP methods
         config.setAllowedMethods(List.of(
                 "GET",
                 "POST",
@@ -50,9 +48,7 @@ public class CorsConfig {
                 "OPTIONS"
         ));
 
-        // Applying configuration to all endpoints
         source.registerCorsConfiguration("/**", config);
-        /*source.registerCorsConfiguration("/", config);*/
 
         return new CorsFilter(source);
     }

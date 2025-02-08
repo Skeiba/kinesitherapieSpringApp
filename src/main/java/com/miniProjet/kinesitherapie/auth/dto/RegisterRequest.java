@@ -18,7 +18,7 @@ public class RegisterRequest {
     @Email(message = AppConstants.INVALID_EMAIL)
     private String email;
 
-    @NotBlank(message = "Mot de paase can't be empty")
+    @NotBlank(message = "Mot de pas can't be empty")
     private String motDePasse;
 
     @NotBlank

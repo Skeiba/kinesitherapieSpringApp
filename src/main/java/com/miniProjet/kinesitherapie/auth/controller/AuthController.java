@@ -9,20 +9,20 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -68,6 +68,26 @@ public class AuthController {
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
 
+    @GetMapping("/check-session")
+    public ResponseEntity<?> checkSession(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "No active session"));
+        }
+        try {
+            Utilisateur utilisateur = utilisateurService.findByEmail(principal.getName());
+            return ResponseEntity.ok(Map.of(
+                    "email", utilisateur.getEmail(),
+                    "role", utilisateur.getRole().name(),
+                    "prenom", utilisateur.getPrenom(),
+                    "sessionActive", true
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid session"));
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
@@ -100,6 +120,7 @@ public class AuthController {
         result.put("message", "Login successful!");
         result.put("email", utilisateur.getEmail());
         result.put("role", utilisateur.getRole().name());
+        result.put("prenom",utilisateur.getPrenom());
         return ResponseEntity.ok(result);
     }
 

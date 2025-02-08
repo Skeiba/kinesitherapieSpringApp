@@ -12,10 +12,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.List;
 
-@Configuration
+//@Configuration
 public class SecurityConfiguration {
 
-    @Bean
+    //@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -32,7 +32,7 @@ public class SecurityConfiguration {
                     c.configurationSource(source);
                 })
                 .authorizeHttpRequests(
-                        req->req.requestMatchers("/api/salles","/api/salles/{id}", "/refresh_token/**")
+                        req->req.requestMatchers("/api/**","/api/salles/{id}", "/refresh_token/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());

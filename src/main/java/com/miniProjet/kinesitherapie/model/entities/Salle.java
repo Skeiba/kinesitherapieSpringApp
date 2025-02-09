@@ -27,6 +27,6 @@ public class Salle {
     @Column(nullable = false)
     private RessourceStatus status;
 
-    private int nombreMachines;
+    @Column(nullable = false)
     private int nombreLits;
 }

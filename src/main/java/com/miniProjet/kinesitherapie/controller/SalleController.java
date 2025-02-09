@@ -1,5 +1,6 @@
 package com.miniProjet.kinesitherapie.controller;
 
+import com.miniProjet.kinesitherapie.model.dto.SalleDTO;
 import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.services.interfaces.SalleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +18,25 @@ public class SalleController {
 
 
     @GetMapping
-    public List<Salle> getAllSalles() {
-        return salleService.getAllSalles();
+    public ResponseEntity<List<SalleDTO>> getAllSalles() {
+        return ResponseEntity.ok(salleService.getAllSalles());
     }
 
 
     @GetMapping("/{id}")
-    public Salle getSalleById(@PathVariable Long id) {
+    public SalleDTO getSalleById(@PathVariable Long id) {
         return salleService.getSalleById(id);
     }
 
 
     @PostMapping
-    public Salle createSalle(@RequestBody Salle salle) {
+    public SalleDTO createSalle(@RequestBody SalleDTO salle) {
         return salleService.createSalle(salle);
     }
 
 
     @PutMapping("/{id}")
-    public Salle updateSalle(@PathVariable Long id, @RequestBody Salle salleDetails) {
+    public SalleDTO updateSalle(@PathVariable Long id, @RequestBody SalleDTO salleDetails) {
         return salleService.updateSalle(id, salleDetails);
     }
 

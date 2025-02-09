@@ -14,6 +14,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 
 @Slf4j
@@ -28,15 +32,33 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session
+               /* .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                )
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+                )*/
+
+                .cors(c -> {
+                    CorsConfigurationSource source = request -> {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(
+                                List.of("http://localhost:3000", "http://localhost:3001"));
+                        config.setAllowedMethods(
+                                List.of("GET", "POST", "PUT", "DELETE"));
+                        config.setAllowedHeaders(List.of("*"));
+                        return config;
+                    };
+                    c.configurationSource(source);
+                })
+                .authorizeHttpRequests(
+                        req->req.requestMatchers("/api/**","/api/salles/{id}", "/refresh_token/**")
+                                .permitAll()
+                                .anyRequest()
+                                .authenticated())
+                /*.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**", "/api/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/secretaire/**").hasRole("SECRETAIRE")
                         .anyRequest().authenticated()
-                )
+                )*/
                 .logout(logout -> logout
                         .logoutUrl("/api/auth/logout")
                         .addLogoutHandler(customLogoutHandler)

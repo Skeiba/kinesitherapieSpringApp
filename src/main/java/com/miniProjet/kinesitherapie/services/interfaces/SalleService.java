@@ -1,33 +1,23 @@
 package com.miniProjet.kinesitherapie.services.interfaces;
 
+import com.miniProjet.kinesitherapie.model.dto.SalleDTO;
 import com.miniProjet.kinesitherapie.model.entities.Patient;
-import com.miniProjet.kinesitherapie.model.entities.Salle;
-import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface SalleService {
 
-    Salle createSalle(Salle salle);
+    SalleDTO createSalle(SalleDTO salleDTO);
 
+    List<SalleDTO> getAllSalles();
 
-    List<Salle> getAllSalles();
+    SalleDTO getSalleById(Long id);
 
-    Salle getSalleById(Long id) ;
+    SalleDTO updateSalle(Long id, SalleDTO salleDetails);
 
+    void deleteSalle(Long id);
 
-    Salle updateSalle(Long id, Salle salleDetails) ;
-
-
-    void deleteSalle(Long id) ;
-
-    List<Salle> getAvailableSalles();
+    List<SalleDTO> getAvailableSalles();
 
     void setPatientSalle(Long id, Patient patient);
-
-
 }
-

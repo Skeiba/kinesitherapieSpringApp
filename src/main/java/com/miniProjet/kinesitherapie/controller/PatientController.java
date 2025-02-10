@@ -1,5 +1,6 @@
 package com.miniProjet.kinesitherapie.controller;
 
+import com.miniProjet.kinesitherapie.model.dto.CreatePatientDTO;
 import com.miniProjet.kinesitherapie.model.dto.PageResponse;
 import com.miniProjet.kinesitherapie.model.dto.PatientDTO;
 import com.miniProjet.kinesitherapie.model.dto.PatientHistoryDTO;
@@ -24,7 +25,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @PostMapping
-    public ResponseEntity<PatientDTO> createPatient(@RequestBody PatientDTO patientDTO) {
+    public ResponseEntity<PatientDTO> createPatient(@RequestBody CreatePatientDTO patientDTO) {
         PatientDTO createdPatient = patientService.createPatient(patientDTO);
         return new ResponseEntity<>(createdPatient, HttpStatus.CREATED);
     }

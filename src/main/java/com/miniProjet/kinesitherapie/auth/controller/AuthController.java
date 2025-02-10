@@ -2,6 +2,7 @@ package com.miniProjet.kinesitherapie.auth.controller;
 
 import com.miniProjet.kinesitherapie.auth.dto.LoginRequest;
 import com.miniProjet.kinesitherapie.auth.dto.RegisterRequest;
+import com.miniProjet.kinesitherapie.auth.utils.JwtUtil;
 import com.miniProjet.kinesitherapie.exceptions.EmailAlreadyExistsException;
 import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
 import com.miniProjet.kinesitherapie.services.interfaces.UtilisateurService;
@@ -67,6 +68,7 @@ public class AuthController {
     private final UtilisateurService utilisateurService;
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
     @GetMapping("/check-session")
     public ResponseEntity<?> checkSession(Principal principal) {
@@ -86,6 +88,15 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "Invalid session"));
         }
+    }
+
+    @GetMapping("/get-jwt")
+    public ResponseEntity<Map<String, String>> getJwt(HttpSession session) {
+        String jwt = (String) session.getAttribute("jwt");
+        if (jwt == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "No Jwt found in session"));
+        }
+        return ResponseEntity.ok(Map.of("jwt", jwt));
     }
 
     @PostMapping("/register")
@@ -116,11 +127,16 @@ public class AuthController {
         Utilisateur utilisateur = utilisateurService.findByEmail(loginRequest.email());
         utilisateurService.updateLoggedInStatus(utilisateur.getId(), true);
 
+        String jwt = jwtUtil.generateToken(utilisateur.getEmail());
+        session.setAttribute("jwt", jwt);
+
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Login successful!");
         result.put("email", utilisateur.getEmail());
         result.put("role", utilisateur.getRole().name());
         result.put("prenom",utilisateur.getPrenom());
+        result.put("jwt", jwt);
+
         return ResponseEntity.ok(result);
     }
 

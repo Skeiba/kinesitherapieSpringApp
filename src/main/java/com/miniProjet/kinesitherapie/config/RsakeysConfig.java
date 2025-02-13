@@ -1,4 +1,4 @@
 package com.miniProjet.kinesitherapie.config;
 
-public class AppConfig {
+public class RsakeysConfig {
 }

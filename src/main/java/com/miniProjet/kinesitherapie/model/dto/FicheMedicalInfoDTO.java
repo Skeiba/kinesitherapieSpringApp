@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FicheMedicalDTO {
+public class FicheMedicalInfoDTO {
     @Positive
     private Long id;
 

@@ -16,5 +16,5 @@ public interface UtilisateurService extends UserDetailsService {
     UtilisateurDTO getUtilisateur(Long userId);
     Page<UtilisateurDTO> getAllUtilisateurs(int page, int size);
     void updateLoggedInStatus(Long id, boolean isLoggedIn);
-    void removeUtilisateur(Long id);
+    boolean removeUtilisateur(Long id);
 }

@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/patients")
@@ -85,11 +87,14 @@ public class PatientController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
-        log.info("PathVariable ID: {}", id);
-        log.info("User: {}", SecurityContextHolder.getContext().getAuthentication());
-        patientService.deletePatient(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Map<String, String>> deletePatient(@PathVariable Long id) {
+        boolean isDeleted = patientService.deletePatient(id);
+
+        if (isDeleted) {
+            return ResponseEntity.ok(Map.of("message","Patient deleted successfully."));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message","Patient not found."));
+        }
     }
 
 }

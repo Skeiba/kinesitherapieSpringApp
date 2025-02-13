@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/utilisateurs")
@@ -51,9 +53,13 @@ public class UtilisateurController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUtilisateur(@PathVariable Long id) {
-        utilisateurService.removeUtilisateur(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Map<String, String>> deleteUtilisateur(@PathVariable Long id) {
+        boolean isRemoved = utilisateurService.removeUtilisateur(id);
+        if (isRemoved) {
+            return ResponseEntity.ok(Map.of("message", "Utilisateur removed"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Utilisateur not found"));
+        }
     }
 
 }

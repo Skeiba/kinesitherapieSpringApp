@@ -2,6 +2,7 @@ package com.miniProjet.kinesitherapie.utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailSenderService {
 
+
     private final JavaMailSender mailSender;
+
 
     @Value("${spring.mail.username}")
     private String senderEmail;
+
 
     public boolean sendPasswordResetEmail(String email, String subject, String message) {
         try {

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -42,4 +43,18 @@ public class Utilisateur {
 
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Notification> notifications;
+
+    @Column(nullable = true, length = 15)
+    private String phoneNumber;
+
+    @Column(nullable = true, length = 255)
+    private String address;
+
+    @Column(nullable = true)
+    private LocalDate dob;
+
+    @Column(nullable = true, length = 10)
+    private String gender;
+
+
 }

@@ -3,11 +3,8 @@ package com.miniProjet.kinesitherapie.model.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class RendezVousDTO extends RendezVousInfoDTO{
-    private Long patientId;
-    private List<Long> prestationIds;
+public class PatientRendezVousDTO extends CreatePatientDTO{
+    private RendezVousDTO rendezVousDTO;
 }

@@ -26,4 +26,5 @@ public class AppConstants {
     public static final String INVALID_ADRESSE = "Adresse can't be empty";
     public static final String INVALID_MESSAGE = "Message can't be empty";
     public static final String INVALID_DATE = "Date can't be empty";
+    public static final String INVALID_TIME = "Time can't be empty";
 }

@@ -4,7 +4,6 @@ import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.hibernate.annotations.BatchSize;
 
 import java.util.List;
 

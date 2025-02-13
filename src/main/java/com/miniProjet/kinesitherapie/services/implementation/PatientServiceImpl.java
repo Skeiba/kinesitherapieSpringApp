@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -30,7 +31,7 @@ public class PatientServiceImpl implements PatientService {
 
 
     @Override
-    public PatientDTO createPatient(PatientDTO patientDTO) {
+    public PatientDTO createPatient(CreatePatientDTO patientDTO) {
         Patient patient = modelMapper.map(patientDTO, Patient.class);
         patientRepository.save(patient);
         return modelMapper.map(patient, PatientDTO.class);
@@ -72,33 +73,39 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deletePatient(Long id) {
-        patientRepository.deleteById(id);
+    public boolean deletePatient(Long id) {
+        Optional<Patient> patient = patientRepository.findById(id);
+        if (patient.isPresent()) {
+            patientRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
+
 
     @Override
     public PatientHistoryDTO getPatientHistory(Long patientId) {
         Patient patient = patientRepository.findById(patientId)
                 .orElseThrow(() -> new PatientNotFoundException("Patient with ID " + patientId + " not found"));
 
-        List<FicheMedicalDTO> fichesMedicales = ficheMedicalRepository.findByPatient_Id(patientId)
+        List<FicheMedicalInfoDTO> fichesMedicales = ficheMedicalRepository.findByPatient_Id(patientId)
                 .stream()
-                .map(ficheMedical -> modelMapper.map(ficheMedical, FicheMedicalDTO.class))
+                .map(ficheMedical -> modelMapper.map(ficheMedical, FicheMedicalInfoDTO.class))
                 .toList();
 
-        List<RendezVousDTO> rendezVous = rendezVousRepository.findByPatient_Id(patientId)
+        List<RendezVousInfoDTO> rendezVous = rendezVousRepository.findByPatient_Id(patientId)
                 .stream()
-                .map(rdv -> modelMapper.map(rdv, RendezVousDTO.class))
+                .map(rdv -> modelMapper.map(rdv, RendezVousInfoDTO.class))
                 .toList();
 
-        List<PaiementDTO> paiements = paiementRepository.findByPatient_Id(patientId)
+        List<PaiementInfoDTO> paiements = paiementRepository.findByPatient_Id(patientId)
                 .stream()
-                .map(paiement -> modelMapper.map(paiement, PaiementDTO.class))
+                .map(paiement -> modelMapper.map(paiement, PaiementInfoDTO.class))
                 .toList();
 
-        List<NotificationDTO> notifications = notificationRepository.findByPatient_Id(patientId)
+        List<NotificationInfoDTO> notifications = notificationRepository.findByPatient_Id(patientId)
                 .stream()
-                .map(notification -> modelMapper.map(notification, NotificationDTO.class))
+                .map(notification -> modelMapper.map(notification, NotificationInfoDTO.class))
                 .toList();
 
         PatientHistoryDTO patientHistoryDTO = modelMapper.map(patient, PatientHistoryDTO.class);

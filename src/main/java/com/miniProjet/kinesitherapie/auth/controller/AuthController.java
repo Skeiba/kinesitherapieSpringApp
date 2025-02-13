@@ -2,6 +2,7 @@ package com.miniProjet.kinesitherapie.auth.controller;
 
 import com.miniProjet.kinesitherapie.auth.dto.LoginRequest;
 import com.miniProjet.kinesitherapie.auth.dto.RegisterRequest;
+import com.miniProjet.kinesitherapie.auth.utils.JwtUtil;
 import com.miniProjet.kinesitherapie.exceptions.EmailAlreadyExistsException;
 import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
 import com.miniProjet.kinesitherapie.services.interfaces.UtilisateurService;
@@ -9,20 +10,20 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 /**
@@ -67,6 +68,36 @@ public class AuthController {
     private final UtilisateurService utilisateurService;
     private final ModelMapper modelMapper;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    @GetMapping("/check-session")
+    public ResponseEntity<?> checkSession(Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "No active session"));
+        }
+        try {
+            Utilisateur utilisateur = utilisateurService.findByEmail(principal.getName());
+            return ResponseEntity.ok(Map.of(
+                    "email", utilisateur.getEmail(),
+                    "role", utilisateur.getRole().name(),
+                    "prenom", utilisateur.getPrenom(),
+                    "sessionActive", true
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Invalid session"));
+        }
+    }
+
+    @GetMapping("/get-jwt")
+    public ResponseEntity<Map<String, String>> getJwt(HttpSession session) {
+        String jwt = (String) session.getAttribute("jwt");
+        if (jwt == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "No Jwt found in session"));
+        }
+        return ResponseEntity.ok(Map.of("jwt", jwt));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
@@ -96,10 +127,16 @@ public class AuthController {
         Utilisateur utilisateur = utilisateurService.findByEmail(loginRequest.email());
         utilisateurService.updateLoggedInStatus(utilisateur.getId(), true);
 
+        String jwt = jwtUtil.generateToken(utilisateur.getEmail());
+        session.setAttribute("jwt", jwt);
+
         Map<String, Object> result = new HashMap<>();
         result.put("message", "Login successful!");
         result.put("email", utilisateur.getEmail());
         result.put("role", utilisateur.getRole().name());
+        result.put("prenom",utilisateur.getPrenom());
+        result.put("jwt", jwt);
+
         return ResponseEntity.ok(result);
     }
 

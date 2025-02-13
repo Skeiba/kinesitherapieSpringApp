@@ -4,16 +4,23 @@ import com.miniProjet.kinesitherapie.auth.dto.RegisterRequest;
 import com.miniProjet.kinesitherapie.auth.model.CustomUserDetails;
 import com.miniProjet.kinesitherapie.exceptions.EmailAlreadyExistsException;
 import com.miniProjet.kinesitherapie.exceptions.EmailDontExistException;
+import com.miniProjet.kinesitherapie.model.dto.UserUpdateDTO;
+import com.miniProjet.kinesitherapie.model.dto.UtilisateurDTO;
 import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
 import com.miniProjet.kinesitherapie.model.repositories.UtilisateurRepository;
 import com.miniProjet.kinesitherapie.services.interfaces.UtilisateurService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,19 +47,71 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setMotDePasse(passwordEncoder.encode(registerRequest.getMotDePasse()));
         return utilisateurRepository.save(utilisateur);
     }
-    @Override
-    public void saveUtilisateur(Utilisateur utilisateur) {
-        utilisateurRepository.save(utilisateur);
-    }
-
-    @Override
-    public boolean existsByEmail(String email) {
-        return utilisateurRepository.existsByEmail(email);
-    }
 
     @Override
     public void updateLoggedInStatus(Long id, boolean isLoggedIn) {
         utilisateurRepository.updateLoggedInStatus(id, isLoggedIn);
+    }
+
+    @Override
+    public boolean removeUtilisateur(Long id) {
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findById(id);
+        if (utilisateur.isPresent()) {
+            utilisateurRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public UtilisateurDTO updateUtilisateur(Long userId, UserUpdateDTO dto) {
+
+        if (dto == null || userId == null) {
+            throw new IllegalArgumentException("Utilisateur id and dto cannot be null");
+        }
+
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+
+        if (dto.getEmail() != null && !dto.getEmail().equals(utilisateur.getEmail())
+                && utilisateurRepository.existsByEmail(dto.getEmail())) {
+            throw new EmailAlreadyExistsException("Email already exists");
+        }
+
+        if (dto.getNom() != null) {
+            utilisateur.setNom(dto.getNom());
+        }
+        if (dto.getPrenom() != null) {
+            utilisateur.setPrenom(dto.getPrenom());
+        }
+        if (dto.getEmail() != null) {
+            utilisateur.setEmail(dto.getEmail());
+        }
+        if (dto.getMotDePasse() != null && !dto.getMotDePasse().trim().isEmpty()) {
+            String encodedPassword = passwordEncoder.encode(dto.getMotDePasse());
+            utilisateur.setMotDePasse(encodedPassword);
+        }
+        if (dto.getRole() != null) {
+            utilisateur.setRole(dto.getRole());
+        }
+
+        Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
+
+        return modelMapper.map(updatedUtilisateur, UtilisateurDTO.class);
+    }
+
+    @Override
+    public UtilisateurDTO getUtilisateur(Long userId) {
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
+        return modelMapper.map(utilisateur, UtilisateurDTO.class);
+    }
+
+    @Override
+    public Page<UtilisateurDTO> getAllUtilisateurs(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Utilisateur> utilisateurs = utilisateurRepository.findAll(pageable);
+        return utilisateurs.map(utilisateur -> modelMapper.map(utilisateur, UtilisateurDTO.class));
     }
 
     @Override

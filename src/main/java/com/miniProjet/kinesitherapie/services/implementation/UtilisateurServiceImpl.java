@@ -7,6 +7,7 @@ import com.miniProjet.kinesitherapie.exceptions.EmailDontExistException;
 import com.miniProjet.kinesitherapie.model.dto.UserUpdateDTO;
 import com.miniProjet.kinesitherapie.model.dto.UtilisateurDTO;
 import com.miniProjet.kinesitherapie.model.entities.Utilisateur;
+import com.miniProjet.kinesitherapie.model.enums.Role;
 import com.miniProjet.kinesitherapie.model.repositories.UtilisateurRepository;
 import com.miniProjet.kinesitherapie.services.interfaces.UtilisateurService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -64,6 +66,25 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public void saveUtilisateur(Utilisateur utilisateur) {
+
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+
+    @Override
+    public Optional<Utilisateur> findById(Long id) {
+        return Optional.empty();
+    }
+
+    public Utilisateur saveSecretaire(Utilisateur utilisateur) {
+        utilisateur.setRole(Role.SECRETAIRE);
+        return  utilisateurRepository.save(utilisateur);
+    }
+    @Override
     public UtilisateurDTO updateUtilisateur(Long userId, UserUpdateDTO dto) {
 
         if (dto == null || userId == null) {
@@ -94,10 +115,16 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         if (dto.getRole() != null) {
             utilisateur.setRole(dto.getRole());
         }
-
         Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
 
         return modelMapper.map(updatedUtilisateur, UtilisateurDTO.class);
+    }
+
+
+    public List<Utilisateur> getAllSecretaires() {
+        // Fetch all users with role SECRETAIRE
+        List<Utilisateur> secretaires = utilisateurRepository.findAllByRole(Role.SECRETAIRE);
+        return secretaires;
     }
 
     @Override
@@ -119,5 +146,25 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.findByEmail(email)
                 .orElseThrow(() -> new EmailDontExistException("Utilisateur not found with email :"+email));
     }
+
+
+    public Optional<Utilisateur> updateSecretaire(Long id, Utilisateur utilisateur) {
+        if (utilisateurRepository.existsById(id)) {
+            utilisateur.setId(id);
+            utilisateur.setRole(Role.SECRETAIRE);
+            return Optional.of(utilisateurRepository.save(utilisateur));
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteSecretaire(Long id) {
+        if (utilisateurRepository.existsById(id)) {
+            utilisateurRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 
 }

@@ -14,10 +14,10 @@ import java.util.List;
  *
  */
 
-@Configuration
+//@Configuration
 public class CorsConfig {
 
-    @Bean
+    //@Bean
     public static CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();

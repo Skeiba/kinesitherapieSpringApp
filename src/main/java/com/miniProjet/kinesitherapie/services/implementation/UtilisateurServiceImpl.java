@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -52,10 +54,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
-    public void removeUtilisateur(Long id) {
-        Utilisateur utilisateur = utilisateurRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        utilisateurRepository.delete(utilisateur);
+    public boolean removeUtilisateur(Long id) {
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findById(id);
+        if (utilisateur.isPresent()) {
+            utilisateurRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

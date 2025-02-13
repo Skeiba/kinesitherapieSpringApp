@@ -12,8 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class PatientHistoryDTO extends PatientDTO{
-    private List<FicheMedicalDTO> fichesMedicales;
-    private List<RendezVousDTO> rendezVous;
-    private List<PaiementDTO> paiements;
-    private List<NotificationDTO> notifications;
+    private List<FicheMedicalInfoDTO> fichesMedicales;
+    private List<RendezVousInfoDTO> rendezVous;
+    private List<PaiementInfoDTO> paiements;
+    private List<NotificationInfoDTO> notifications;
 }

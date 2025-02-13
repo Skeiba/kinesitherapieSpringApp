@@ -1,5 +1,6 @@
 package com.miniProjet.kinesitherapie.model.entities;
 
+import com.miniProjet.kinesitherapie.model.enums.PrestationType;
 import com.miniProjet.kinesitherapie.utils.AppConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -9,6 +10,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "prestations")
+//it's a service like it has a type name and tarif aka money
 public class Prestation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +21,9 @@ public class Prestation {
     private String nom;
 
     @NotBlank(message = "Type can't be empty")
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 50)
-    private String type;
+    private PrestationType type;
 
     @Column(nullable = false)
     @Positive(message = "Tarif must be a positive number")

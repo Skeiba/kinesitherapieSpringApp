@@ -28,7 +28,7 @@ public class NotificationServiceImpl implements NotificationService {
     public void sendRendezVousConfirmation(RendezVous savedRendezVous, PatientDTO patientDTO, Double totalAmount) {
         String subject = "Rendez-vous Confirmation";
         String message = String.format(
-                "Dear %s, your rendez-vous is confirmed for %s. Total amount: %.2f",
+                "Dear %s, your rendez-vous is confirmed for %s. Total amount: %.2f DH",
                 patientDTO.getNom(),
                 savedRendezVous.getDateHeure(),
                 totalAmount

@@ -10,4 +10,5 @@ import java.util.List;
 public class RendezVousDTO extends RendezVousInfoDTO{
     private Long patientId;
     private List<Long> prestationIds;
+    private Double totalAmount;
 }

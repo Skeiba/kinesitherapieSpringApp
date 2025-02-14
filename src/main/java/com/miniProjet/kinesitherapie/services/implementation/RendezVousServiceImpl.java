@@ -64,6 +64,7 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVousDTO.setPrestationIds(
                 savedRendezVous.getPrestations().stream().map(Prestation::getId).collect(Collectors.toList())
         );
+        rendezVousDTO.setTotalAmount(totalAmount);
         return rendezVousDTO;
     }
     @Override
@@ -106,7 +107,7 @@ public class RendezVousServiceImpl implements RendezVousService {
         if (!salle.getStatus().equals(RessourceStatus.AVAILABLE)){
             return false;
         }
-        boolean isBooked = !rendezVousRepository.existsBySalle_IdAndDateHeureBetween(
+        boolean isBooked = rendezVousRepository.existsBySalle_IdAndDateHeureBetween(
                 salleId,
                 dateHeure.minusMinutes(30),
                 dateHeure.plusMinutes(30)

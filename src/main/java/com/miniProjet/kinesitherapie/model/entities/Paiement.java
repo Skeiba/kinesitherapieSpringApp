@@ -19,7 +19,7 @@ public class Paiement {
 
     @Column(nullable = false)
     @Positive(message = "Montant must be a positive number")
-    private double montant;
+    private Double montant;
 
     @Column(nullable = false)
     private LocalDateTime date;

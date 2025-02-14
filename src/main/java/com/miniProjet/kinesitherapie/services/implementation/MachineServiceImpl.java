@@ -5,23 +5,21 @@ import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.model.repositories.MachineRepository;
 import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
 import com.miniProjet.kinesitherapie.services.interfaces.MachineService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class MachineServiceImpl implements MachineService {
 
     private final MachineRepository machineRepository;
     private final SalleRepository salleRepository;
-
-    @Autowired
-    public MachineServiceImpl(MachineRepository machineRepository,SalleRepository salleRepository ) {
-        this.machineRepository = machineRepository;
-        this.salleRepository =  salleRepository;
-    }
 
     @Override
     public Machine createMachine(Machine machine) {

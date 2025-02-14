@@ -13,7 +13,6 @@ public class RendezVousInfoDTO {
     @Positive
     private Long id;
 
-    @NotBlank(message = AppConstants.INVALID_DATE)
     private LocalDateTime dateHeure;
 
     private Long salleId;

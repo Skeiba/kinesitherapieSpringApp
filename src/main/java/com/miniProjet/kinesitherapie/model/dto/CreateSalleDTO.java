@@ -4,11 +4,9 @@ import com.miniProjet.kinesitherapie.model.enums.RessourceStatus;
 import lombok.Data;
 
 @Data
-public class SalleDTO {
-    private Long id;
-    private String name;
-    private String location;
+public class CreateSalleDTO {
+    private String nom;
+    private String Location;
     private RessourceStatus status;
-    private int capacity;
+    private int nombreLits;
 }
-

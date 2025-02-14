@@ -1,11 +1,15 @@
 package com.miniProjet.kinesitherapie.controller;
 
 import com.miniProjet.kinesitherapie.model.dto.CreateSalleDTO;
+import com.miniProjet.kinesitherapie.model.dto.PageResponse;
+import com.miniProjet.kinesitherapie.model.dto.PatientDTO;
 import com.miniProjet.kinesitherapie.model.dto.SalleDTO;
 import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.services.interfaces.SalleService;
+import com.miniProjet.kinesitherapie.utils.AppConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +26,24 @@ public class SalleController {
 
 
     @GetMapping
-    public ResponseEntity<List<SalleDTO>> getAllSalles() {
-        return ResponseEntity.ok(salleService.getAllSalles());
+    public ResponseEntity<PageResponse<SalleDTO>> getAllSalles(@RequestParam(defaultValue = AppConstants.PAGE_NUMBER, required = false) int page,
+                                                               @RequestParam(defaultValue = AppConstants.PAGE_SIZE, required = false) int size) {
+        Page<SalleDTO> salles = salleService.getAllSalles(page, size);
+        PageResponse<SalleDTO> response = new PageResponse<>(
+                salles.getContent(),
+                salles.getNumber(),
+                salles.getSize(),
+                salles.getTotalElements(),
+                salles.getTotalPages(),
+                salles.isLast()
+        );
+        return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<SalleDTO>> getAvailableSalles() {
+        return ResponseEntity.ok(salleService.getAvailableSalles());
+    }
 
     @GetMapping("/{id}")
     public SalleDTO getSalleById(@PathVariable Long id) {
@@ -48,5 +66,10 @@ public class SalleController {
     public ResponseEntity<?> deleteSalle(@PathVariable Long id) {
         salleService.deleteSalle(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> countAllSalles() {
+        return ResponseEntity.ok(salleService.countAllSalles());
     }
 }

@@ -64,4 +64,9 @@ public class UtilisateurController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("message", "Utilisateur not found"));
         }
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> countUtilisateur() {
+        return ResponseEntity.ok(utilisateurService.countUtilisateurs());
+    }
 }

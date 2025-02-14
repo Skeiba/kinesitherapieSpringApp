@@ -96,4 +96,9 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> countPatients() {
+        return ResponseEntity.ok(patientService.countPatients());
+    }
+
 }

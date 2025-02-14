@@ -26,7 +26,7 @@ public class Patient {
     @NotBlank(message = AppConstants.INVALID_ADRESSE)
     @Column(nullable = false, length = 50)
     private String adresse;
-    //add male and female and dateofbirth
+
     @NotNull(message = "Email cannot be null")
     @Email(message = AppConstants.INVALID_EMAIL)
     @Column(nullable = false,unique = true, length = 50)

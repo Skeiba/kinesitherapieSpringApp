@@ -13,4 +13,5 @@ public interface PatientService {
     Page<PatientDTO> getAllPatientsSorted(int page, int size, String sortBy, String direction);
     boolean deletePatient(Long id);
     PatientHistoryDTO getPatientHistory(Long patientId);
+    Long countPatients();
 }

@@ -9,10 +9,11 @@ import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
 import com.miniProjet.kinesitherapie.services.interfaces.SalleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,11 +32,10 @@ public class SalleServiceImpl implements SalleService {
         return modelMapper.map(salle, SalleDTO.class);
     }
 
-    public List<SalleDTO> getAllSalles() {
-        return salleRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+    public Page<SalleDTO> getAllSalles(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Salle> salles = salleRepository.findAll(pageable);
+        return salles.map(salle -> modelMapper.map(salle, SalleDTO.class));
     }
 
     public SalleDTO getSalleById(Long id) {
@@ -48,8 +48,8 @@ public class SalleServiceImpl implements SalleService {
         Salle existingSalle = salleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Salle not found with id: " + id));
 
-        existingSalle.setNom(salleDetails.getName());
-        existingSalle.setNombreLits(salleDetails.getCapacity());
+        existingSalle.setNom(salleDetails.getNom());
+        existingSalle.setNombreLits(salleDetails.getNombreLits());
         existingSalle.setLocation(salleDetails.getLocation());
         if (salleDetails.getStatus() != null) {
             existingSalle.setStatus(salleDetails.getStatus());
@@ -82,13 +82,18 @@ public class SalleServiceImpl implements SalleService {
         salleRepository.save(salle);
     }
 
+    @Override
+    public Long countAllSalles() {
+        return salleRepository.count();
+    }
+
     // 🔹 Convert Entity -> DTO
     private SalleDTO convertToDTO(Salle salle) {
         SalleDTO dto = new SalleDTO();
         dto.setId(salle.getId());
-        dto.setName(salle.getNom());
+        dto.setNom(salle.getNom());
         dto.setLocation(salle.getLocation());
-        dto.setCapacity(salle.getNombreLits());
+        dto.setNombreLits(salle.getNombreLits());
         dto.setStatus(RessourceStatus.valueOf(salle.getStatus().name()));
         return dto;
     }
@@ -96,9 +101,9 @@ public class SalleServiceImpl implements SalleService {
     // 🔹 Convert DTO -> Entity
     private Salle convertToEntity(SalleDTO dto) {
         Salle salle = new Salle();
-        salle.setNom(dto.getName());
+        salle.setNom(dto.getNom());
         salle.setLocation(dto.getLocation());
-        salle.setNombreLits(dto.getCapacity());
+        salle.setNombreLits(dto.getNombreLits());
         salle.setStatus(RessourceStatus.valueOf(String.valueOf(dto.getStatus())));
         return salle;
     }

@@ -66,6 +66,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
     @Override
+    public Long countUtilisateurs() {
+        return utilisateurRepository.count();
+    }
+
+    @Override
     public void saveUtilisateur(Utilisateur utilisateur) {
 
     }
@@ -162,7 +167,4 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
         return false;
     }
-
-
-
 }

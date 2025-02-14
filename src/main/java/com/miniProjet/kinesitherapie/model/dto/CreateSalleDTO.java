@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class CreateSalleDTO {
     private String nom;
-    private String Location;
+    private String location;
     private RessourceStatus status;
     private int nombreLits;
 }

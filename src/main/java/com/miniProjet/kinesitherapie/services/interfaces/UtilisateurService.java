@@ -19,6 +19,7 @@ public interface UtilisateurService extends UserDetailsService {
     Page<UtilisateurDTO> getAllUtilisateurs(int page, int size);
     void updateLoggedInStatus(Long id, boolean isLoggedIn);
     boolean removeUtilisateur(Long id);
+    Long countUtilisateurs();
     void saveUtilisateur(Utilisateur utilisateur);
     boolean existsByEmail(String email);
     Optional<Utilisateur> findById(Long id);

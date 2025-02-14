@@ -6,9 +6,9 @@ import lombok.Data;
 @Data
 public class SalleDTO {
     private Long id;
-    private String name;
+    private String nom;
     private String location;
     private RessourceStatus status;
-    private int capacity;
+    private int nombreLits;
 }
 

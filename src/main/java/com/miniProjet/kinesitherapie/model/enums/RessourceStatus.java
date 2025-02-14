@@ -4,8 +4,5 @@ public enum RessourceStatus {
     AVAILABLE,
     IN_USE,
     MAINTENANCE,
-    OCCUPIED,
-    UNDER_MAINTENANCE,
-    FUNCTIONAL,
-    BROKEN
+    OCCUPIED
 }

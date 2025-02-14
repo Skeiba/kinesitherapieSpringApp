@@ -33,6 +33,16 @@ public class GlobalExceptionHandler {
         return createErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(SalleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleSalleNotFoundException(SalleNotFoundException ex) {
+        return createErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(SalleNotAvailableException.class)
+    public ResponseEntity<Map<String, String>> handleSalleNotAvailableException(SalleNotAvailableException ex) {
+        return createErrorResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<Map<String, String>> handleInvalidRoute(NoHandlerFoundException ex) {
         return createErrorResponse("Invalid API route: " + ex.getRequestURL(), HttpStatus.NOT_FOUND);

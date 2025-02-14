@@ -116,4 +116,9 @@ public class PatientServiceImpl implements PatientService {
 
         return patientHistoryDTO;
     }
+
+    @Override
+    public Long countPatients() {
+        return patientRepository.count();
+    }
 }

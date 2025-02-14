@@ -12,10 +12,7 @@ import com.miniProjet.kinesitherapie.model.enums.RessourceStatus;
 import com.miniProjet.kinesitherapie.model.repositories.PrestationRepository;
 import com.miniProjet.kinesitherapie.model.repositories.RendezVousRepository;
 import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
-import com.miniProjet.kinesitherapie.services.interfaces.NotificationService;
-import com.miniProjet.kinesitherapie.services.interfaces.PaiementService;
-import com.miniProjet.kinesitherapie.services.interfaces.PatientService;
-import com.miniProjet.kinesitherapie.services.interfaces.RendezVousService;
+import com.miniProjet.kinesitherapie.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -42,6 +39,7 @@ public class RendezVousServiceImpl implements RendezVousService {
     private final PaiementService paiementService;
     private final NotificationService notificationService;
     private final ModelMapper modelMapper;
+    private final SalleService salleService;
 
     @Override
     public RendezVousDTO createRendezVous(CreateRendezVousDTO createRendezVousDTO) {
@@ -90,7 +88,10 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVous.setPatient(modelMapper.map(patientDTO, Patient.class));
         rendezVous.setDateHeure(createRendezVousDTO.getDateHeure());
         rendezVous.setStatus(createRendezVousDTO.getStatus());
-
+        //not tested yet
+        salle.setStatus(RessourceStatus.IN_USE);
+        salleService.updateSalle(salle.getId(), modelMapper.map(salle, SalleDTO.class));
+        //
         if (createRendezVousDTO.getPrestationIds() != null) {
             List<Prestation> prestations = prestationRepository.findAllById(createRendezVousDTO.getPrestationIds());
             rendezVous.setPrestations(prestations);

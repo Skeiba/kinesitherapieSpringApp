@@ -19,7 +19,6 @@ public class Salle {
     @Column(nullable = false, length = 50)
     private String nom;
 
-
     @Column(nullable = false)
      private String Location;
 

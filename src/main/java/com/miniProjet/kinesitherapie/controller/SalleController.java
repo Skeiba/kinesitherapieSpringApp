@@ -1,20 +1,24 @@
 package com.miniProjet.kinesitherapie.controller;
 
+import com.miniProjet.kinesitherapie.model.dto.CreateSalleDTO;
 import com.miniProjet.kinesitherapie.model.dto.SalleDTO;
 import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.services.interfaces.SalleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/salles")
+@RequiredArgsConstructor
+@PreAuthorize("hasRole('ADMIN') or hasRole('SECRETAIRE')")
 public class SalleController {
 
-    @Autowired
-    private SalleService salleService;
+    private final SalleService salleService;
 
 
     @GetMapping
@@ -30,7 +34,7 @@ public class SalleController {
 
 
     @PostMapping
-    public SalleDTO createSalle(@RequestBody SalleDTO salle) {
+    public SalleDTO createSalle(@RequestBody CreateSalleDTO salle) {
         return salleService.createSalle(salle);
     }
 

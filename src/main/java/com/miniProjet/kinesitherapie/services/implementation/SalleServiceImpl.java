@@ -1,27 +1,34 @@
 package com.miniProjet.kinesitherapie.services.implementation;
 
+import com.miniProjet.kinesitherapie.model.dto.CreateSalleDTO;
 import com.miniProjet.kinesitherapie.model.dto.SalleDTO;
 import com.miniProjet.kinesitherapie.model.entities.Patient;
 import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.model.enums.RessourceStatus;
 import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
 import com.miniProjet.kinesitherapie.services.interfaces.SalleService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class SalleServiceImpl implements SalleService {
 
-    @Autowired
-    private SalleRepository salleRepository;
+    private final SalleRepository salleRepository;
+    private final ModelMapper modelMapper;
 
-    public SalleDTO createSalle(SalleDTO salleDTO) {
-        Salle salle = convertToEntity(salleDTO);
-        salle = salleRepository.save(salle);
-        return convertToDTO(salle);
+    public SalleDTO createSalle(CreateSalleDTO salleDTO) {
+        Salle salle = modelMapper.map(salleDTO, Salle.class);
+        salleRepository.save(salle);
+        return modelMapper.map(salle, SalleDTO.class);
     }
 
     public List<SalleDTO> getAllSalles() {
@@ -44,7 +51,7 @@ public class SalleServiceImpl implements SalleService {
         existingSalle.setNom(salleDetails.getName());
         existingSalle.setNombreLits(salleDetails.getCapacity());
         existingSalle.setLocation(salleDetails.getLocation());
-        if (salleDetails.getStatus() != null) { // Ensure status is not null
+        if (salleDetails.getStatus() != null) {
             existingSalle.setStatus(salleDetails.getStatus());
         }
 
@@ -83,7 +90,6 @@ public class SalleServiceImpl implements SalleService {
         dto.setLocation(salle.getLocation());
         dto.setCapacity(salle.getNombreLits());
         dto.setStatus(RessourceStatus.valueOf(salle.getStatus().name()));
-        dto.setQueue(0); // Example logic
         return dto;
     }
 

@@ -120,9 +120,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return modelMapper.map(updatedUtilisateur, UtilisateurDTO.class);
     }
 
-
     public List<Utilisateur> getAllSecretaires() {
-        // Fetch all users with role SECRETAIRE
         List<Utilisateur> secretaires = utilisateurRepository.findAllByRole(Role.SECRETAIRE);
         return secretaires;
     }

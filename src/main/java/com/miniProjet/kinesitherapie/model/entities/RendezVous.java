@@ -27,7 +27,7 @@ public class RendezVous {
     private Statut status;
 
     @ManyToOne
-    @JoinColumn(name = "salle_id", nullable = false)
+    @JoinColumn(name = "salle_id", nullable = true)
     private Salle salle;
 
     @ManyToMany

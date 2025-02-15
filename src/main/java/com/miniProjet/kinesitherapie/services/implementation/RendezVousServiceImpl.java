@@ -9,6 +9,7 @@ import com.miniProjet.kinesitherapie.model.entities.Prestation;
 import com.miniProjet.kinesitherapie.model.entities.RendezVous;
 import com.miniProjet.kinesitherapie.model.entities.Salle;
 import com.miniProjet.kinesitherapie.model.enums.RessourceStatus;
+import com.miniProjet.kinesitherapie.model.enums.Statut;
 import com.miniProjet.kinesitherapie.model.repositories.PrestationRepository;
 import com.miniProjet.kinesitherapie.model.repositories.RendezVousRepository;
 import com.miniProjet.kinesitherapie.model.repositories.SalleRepository;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,6 +64,7 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVousDTO.setPrestationIds(
                 savedRendezVous.getPrestations().stream().map(Prestation::getId).collect(Collectors.toList())
         );
+
         rendezVousDTO.setTotalAmount(totalAmount);
         return rendezVousDTO;
     }
@@ -87,15 +90,23 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVous.setSalle(salle);
         rendezVous.setPatient(modelMapper.map(patientDTO, Patient.class));
         rendezVous.setDateHeure(createRendezVousDTO.getDateHeure());
-        rendezVous.setStatus(createRendezVousDTO.getStatus());
+        rendezVous.setStatus(Statut.EN_ATTENTE);
         //not tested yet
         salle.setStatus(RessourceStatus.IN_USE);
         salleService.updateSalle(salle.getId(), modelMapper.map(salle, SalleDTO.class));
-        //
-        if (createRendezVousDTO.getPrestationIds() != null) {
+
+//        if (createRendezVousDTO.getPrestationIds() != null) {
+//            List<Prestation> prestations = prestationRepository.findAllById(createRendezVousDTO.getPrestationIds());
+//
+//            rendezVous.setPrestations(prestations);
+//        }
+        if (createRendezVousDTO.getPrestationIds() != null && !createRendezVousDTO.getPrestationIds().isEmpty()) {
             List<Prestation> prestations = prestationRepository.findAllById(createRendezVousDTO.getPrestationIds());
             rendezVous.setPrestations(prestations);
+        } else {
+            rendezVous.setPrestations(new ArrayList<>()); // Évite le null
         }
+
         log.info(rendezVous.getPrestations().toString());
         return rendezVous;
     }

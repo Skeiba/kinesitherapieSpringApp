@@ -14,6 +14,7 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long> 
     @Modifying
     @Query("UPDATE Utilisateur u SET u.loggedIn = :isLoggedIn WHERE u.id = :id")
     void updateLoggedInStatus(Long id, boolean isLoggedIn);
+
     Optional<Utilisateur> findByEmail(String email);
     Optional<Utilisateur> findById(Long id);
     boolean existsByEmail(String email);

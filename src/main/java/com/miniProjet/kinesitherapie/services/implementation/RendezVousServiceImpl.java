@@ -91,15 +91,11 @@ public class RendezVousServiceImpl implements RendezVousService {
         rendezVous.setPatient(modelMapper.map(patientDTO, Patient.class));
         rendezVous.setDateHeure(createRendezVousDTO.getDateHeure());
         rendezVous.setStatus(Statut.EN_ATTENTE);
+        rendezVous.setTotalAmount(paiementService.calculateTotalAmount(createRendezVousDTO.getPrestationIds()));
         //not tested yet
         salle.setStatus(RessourceStatus.IN_USE);
         salleService.updateSalle(salle.getId(), modelMapper.map(salle, SalleDTO.class));
-
-//        if (createRendezVousDTO.getPrestationIds() != null) {
-//            List<Prestation> prestations = prestationRepository.findAllById(createRendezVousDTO.getPrestationIds());
-//
-//            rendezVous.setPrestations(prestations);
-//        }
+        
         if (createRendezVousDTO.getPrestationIds() != null && !createRendezVousDTO.getPrestationIds().isEmpty()) {
             List<Prestation> prestations = prestationRepository.findAllById(createRendezVousDTO.getPrestationIds());
             rendezVous.setPrestations(prestations);
@@ -133,11 +129,9 @@ public class RendezVousServiceImpl implements RendezVousService {
             throw new IllegalArgumentException("Rendez vous cannot be null");
         }
         RendezVousDTO rendezVous = getRendezVous(rdvId);
-
         if (!isSalleAvailable(dto.getSalleId(), dto.getDateHeure())){
             throw new SalleNotAvailableException("Salle is not available at that time");
         }
-
         if (dto.getStatus() != null){
             rendezVous.setStatus(dto.getStatus());
         }

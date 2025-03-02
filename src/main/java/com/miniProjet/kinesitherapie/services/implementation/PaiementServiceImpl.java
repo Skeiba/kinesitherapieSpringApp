@@ -29,7 +29,6 @@ public class PaiementServiceImpl implements PaiementService {
         List<Prestation> prestations = prestationRepository.findAllById(prestationIds);
         return prestations.stream().mapToDouble(Prestation::getTarif).sum();
     }
-
     @Override
     public void processPaiement(Patient patient, Double amount) {
         if (amount > 0.0) {

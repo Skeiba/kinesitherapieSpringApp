@@ -38,6 +38,8 @@ public class RendezVous {
     )
     private List<Prestation> prestations;
 
+    private Double totalAmount;
+
     @ManyToOne
     @JoinColumn(name = "statistiques_id")
     private Statistiques statistiques;

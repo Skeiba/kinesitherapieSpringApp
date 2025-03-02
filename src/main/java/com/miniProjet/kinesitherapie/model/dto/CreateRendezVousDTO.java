@@ -19,5 +19,6 @@ public class CreateRendezVousDTO {
     private LocalDateTime dateHeure;
     private Statut status;
     private List<Long> prestationIds;
+    private Double totalAmount;
 
 }
